@@ -16,7 +16,10 @@ public enum State {
     CONNECTING(1),
     CONNECTED(2),
     SEARCHING(3),
-    STOPSEARCHING(4);
+    STOPSEARCHING(4),
+    FAILEDSEARCH(5),
+    CONNECTFAILED(6);
+
 
     private final int code;
     State(int code) {
