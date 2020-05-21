@@ -31,7 +31,7 @@ public class ModiModuleManager implements ModiFrameObserver, Runnable {
         mModiMananger = manager;
         mHandler = new Handler(Looper.getMainLooper());
 
-        ModiLog.i("kstlove ModiModuleManager init");
+        ModiLog.i("ModiModuleManager init");
 
     }
 
@@ -42,7 +42,7 @@ public class ModiModuleManager implements ModiFrameObserver, Runnable {
 
     public boolean discoverModules() {
 
-        ModiLog.i("kstlove ModiModuleManager discoverModules");
+        ModiLog.i("ModiModuleManager discoverModules");
 
         mModiMananger.sendData(ModiProtocol.discoverModule(0xFFF, (byte) 0x0));
         return true;

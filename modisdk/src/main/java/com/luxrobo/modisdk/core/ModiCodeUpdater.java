@@ -158,8 +158,6 @@ public class ModiCodeUpdater implements ModiFrameObserver {
 
         mStream = ModiStream.makeStream(uuid & 0xFFF, 0, ModiStream.STREAM_TYPE.INTERPRETER, new byte[0]);
 
-        ModiLog.d("kstlove startReset uuid : " + uuid);
-
         mUpdateTargets = mManager.moduleMgr().getModules();
         mCallback = callback;
         mCompleteFlag = false;
@@ -196,8 +194,6 @@ public class ModiCodeUpdater implements ModiFrameObserver {
         if (frame.cmd() != 0x00) {
 
             mRecvQueue.push(frame);
-            ModiLog.d("kstlove onModiFrame frame : " + frame.cmd());
-            ModiLog.d("kstlove onModiFrame mRecvQueue size  : " + mRecvQueue.size());
         }
 
         while (mRecvQueue.size() > 64) {
@@ -562,7 +558,6 @@ public class ModiCodeUpdater implements ModiFrameObserver {
 
                 try {
 
-                    ModiLog.d("kstlove waitForModiFrame sleep");
                     Thread.sleep(100);
 
                 } catch (InterruptedException e) {

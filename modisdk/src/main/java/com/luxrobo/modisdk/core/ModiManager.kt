@@ -138,9 +138,7 @@ class ModiManager : ModiFrameNotifier() {
             .setServiceUuid(parcelUuid)
             .build()
 
-        ModiLog.d("kstlove ModiManager scan $isScanning")
-
-        if (isScanning) {
+       if (isScanning) {
             scanDisposable?.dispose()
         } else {
             val scanResult = rxBleClient.scanBleDevices(scanSettings, scanFilter)
@@ -162,14 +160,9 @@ class ModiManager : ModiFrameNotifier() {
 
     private fun startNotification() {
 
-//        val uuid = UUID.fromString(ModiGattAttributes.convert128UUID(ModiGattAttributes.DEVICE_CHAR_TX_RX))
-
-        ModiLog.d("kstlove startNotification characteristicUuid : $characteristicUuid")
-
-
         mRxBleConnection.setupNotification(characteristicUuid)
             .flatMap { it }
-//            .observeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
                     if(it.size == 16 || it.size == 10) {
@@ -180,7 +173,7 @@ class ModiManager : ModiFrameNotifier() {
 
 
                         if (it[0].toInt() != 0) {
-                            var msg = "kstlove setupNotification Receive Bytes " + it.size + "("
+                            var msg = "setupNotification Receive Bytes " + it.size + "("
 
                             for (i in it.indices)
                                 msg += Integer.toHexString(it[i].toInt() and 0xFF) + ", "
@@ -198,7 +191,7 @@ class ModiManager : ModiFrameNotifier() {
                     }
                 },
                 {
-                    ModiLog.e("kstlove setupNotification error  $it")
+                    ModiLog.e("setupNotification error  $it")
 //                    onConnectionFailure(it)
                 }
             )
@@ -208,11 +201,11 @@ class ModiManager : ModiFrameNotifier() {
 
 
         mRxBleConnection.readCharacteristic(characteristicUuid)
-//            .observeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
                     if (it[0].toInt() != 0) {
-                        var msg = "kstlove readCharacteristic Receive Bytes " + it.size + "("
+                        var msg = "readCharacteristic Receive Bytes " + it.size + "("
 
                         for (i in it.indices)
                             msg += Integer.toHexString(it[i].toInt() and 0xFF) + ", "
@@ -226,7 +219,7 @@ class ModiManager : ModiFrameNotifier() {
                     }
                  },
                 {
-                    ModiLog.e("kstlove readCharacteristic $it")
+                    ModiLog.e("readCharacteristic $it")
                     onConnectionFailure(it)
                 })
             .let {
@@ -344,8 +337,6 @@ class ModiManager : ModiFrameNotifier() {
 
     private fun onConnectionStateChange(newState: RxBleConnection.RxBleConnectionState) {
 
-        ModiLog.d("kstlove onConnectionStateChange ${newState.name}")
-
         when(newState.name) {
 
             "CONNECTING" -> {
@@ -378,8 +369,6 @@ class ModiManager : ModiFrameNotifier() {
     }
 
     private fun onConnectionFailure(e : Throwable) {
-
-        ModiLog.e("kstlove discoverService ${e.message}")
 
         if(e is BleAlreadyConnectedException) {
             disconnect()
@@ -432,8 +421,6 @@ class ModiManager : ModiFrameNotifier() {
     }
 
     fun stopScan() {
-
-        ModiLog.d("kstlove stopScan")
 
         scanDisposable?.dispose()
         mModiClient!!.stopScan()

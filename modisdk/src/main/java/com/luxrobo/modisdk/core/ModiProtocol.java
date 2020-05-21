@@ -145,8 +145,6 @@ public class ModiProtocol {
 
         }
 
-        ModiLog.d("kstlove resetNetworkModule");
-
         return ModiFrame.makeFrame(0xA0, 26, moduleKey, data);
     }
 
